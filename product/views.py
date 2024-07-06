@@ -1,11 +1,11 @@
-# from django_filters import FilterSet, RangeFilter
-
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django_filters.filters import RangeFilter
 from django_filters.rest_framework import FilterSet
 from rest_framework import generics
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_json_api.django_filters import DjangoFilterBackend
 
 from product.models import Product
 from product.serializers import ProductSerializer
@@ -27,10 +27,10 @@ class ProductListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ProductSerializer
     filterset_class = ProductListFilterSet
-    filterset_fields = ['origin', 'species', 'roast_level', 'tested',
-                        'processed']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+
     ordering_fields = ['name', 'price']
-    search_fields = ['name']
+    search_fields = ('name', )
 
     @method_decorator(cache_page(60 * 60 * 2))
     def get(self, request, *args, **kwargs):
