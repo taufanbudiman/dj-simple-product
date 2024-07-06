@@ -18,15 +18,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_simplejwt.views import TokenRefreshView
+
+from product.views import ProductListView, ProductDetailView
+from user.views import MyObtainTokenPairView, RegisterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('user.urls')),
-    path('product/', include('product.urls')),
+    path('login', MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
+    path('login/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register', RegisterView.as_view(), name='auth_register'),
+    path('list-product', ProductListView.as_view(), name='product-list'),
+    path('product/<int:pk>', ProductDetailView.as_view(),
+         name='product-detail'),
 ]
 
-
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-handler400 = 'rest_framework.exceptions.bad_request'
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

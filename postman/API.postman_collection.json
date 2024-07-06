@@ -1,0 +1,257 @@
+{
+	"info": {
+		"_postman_id": "271d9517-8f52-4808-a53b-5831c9fe2605",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19188703"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"pm.environment.set('token', response.data.access);",
+									"pm.environment.set('refresh', response.data.refresh);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\n//     \"username\": \"taufanbudiman\",\n//     \"password\": \"taufan1234\"\n// }\n{\n    \"data\": {\n        \"type\": \"MyObtainTokenPairView\",\n        \"attributes\": {\n            \"username\": \"taufanbudiman\",\n            \"password\": \"taufan1234\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"pm.environment.set('token', response.data.access);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"type\": \"TokenRefreshView\",\n        \"attributes\": {\n            \"refresh\": \"{{refresh}}\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login/refresh",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "regsiter",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"type\": \"User\",\n        \"attributes\": {\n            \"username\": \"defan.abimana\",\n            \"email\": \"defan@algibranstore.id\",\n            \"first_name\": \"Defan\",\n            \"last_name\": \"Abimana\",\n            \"phone_number\": \"085234941188\",\n            \"password\": \"defan1234\",\n            \"password2\": \"defan1234\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/list-product?filter[search]=ffafa",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"list-product"
+							],
+							"query": [
+								{
+									"key": "roast_level",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "tested",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "processed",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "price_min",
+									"value": "1243",
+									"disabled": true
+								},
+								{
+									"key": "price_max",
+									"value": "11000",
+									"disabled": true
+								},
+								{
+									"key": "ordering",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "filter[search]",
+									"value": "ffafa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/product/4",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"product",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
